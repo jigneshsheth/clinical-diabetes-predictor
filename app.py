@@ -1029,37 +1029,37 @@ with tab6:
         with st.expander(f"{lbl} -  `{mod}`"):
             st.write(desc)
 
-    st.divider()
-    st.markdown("#### Expected file locations")
-    file_table = {
-        "File / Directory": [
-            "./data/patients.csv","./data/encounters.csv","./data/conditions.csv",
-            "./data/medications.csv","./data/observations.csv","./data/procedures.csv",
-            "./processed/training_dataset.csv",
-            "./models/risk_model.joblib","./models/scaler.joblib",
-            "./models/metrics.json","./models/feature_importance.csv","./models/predictions.csv",
-            "./chroma_db/",
-        ],
-        "Created by": [
-            "Download Synthea","Download Synthea","Download Synthea",
-            "Download Synthea","Download Synthea","Download Synthea",
-            "Optional manual export",
-            "train_model.py","train_model.py",
-            "train_model.py (optional)","train_model.py (optional)","train_model.py (optional)",
-            "vector_store.py",
-        ],
-        "Required?": [
-            "Yes","Yes","Yes","Yes","Yes","Optional",
-            "Optional (auto-rebuilt)",
-            "Yes (for predictions)","Yes (for predictions)",
-            "Optional","Optional","Optional",
-            "Yes (for RAG)",
-        ],
-    }
-    st.dataframe(
-        pd.DataFrame(file_table).reset_index(drop=True),
-        use_container_width=True,
-        hide_index=True,
-    )
-    st.divider()
+    # st.divider()
+    # st.markdown("#### Expected file locations")
+    # file_table = {
+    #     "File / Directory": [
+    #         "./data/patients.csv","./data/encounters.csv","./data/conditions.csv",
+    #         "./data/medications.csv","./data/observations.csv","./data/procedures.csv",
+    #         "./processed/training_dataset.csv",
+    #         "./models/risk_model.joblib","./models/scaler.joblib",
+    #         "./models/metrics.json","./models/feature_importance.csv","./models/predictions.csv",
+    #         "./chroma_db/",
+    #     ],
+    #     "Created by": [
+    #         "Download Synthea","Download Synthea","Download Synthea",
+    #         "Download Synthea","Download Synthea","Download Synthea",
+    #         "Optional manual export",
+    #         "train_model.py","train_model.py",
+    #         "train_model.py (optional)","train_model.py (optional)","train_model.py (optional)",
+    #         "vector_store.py",
+    #     ],
+    #     "Required?": [
+    #         "Yes","Yes","Yes","Yes","Yes","Optional",
+    #         "Optional (auto-rebuilt)",
+    #         "Yes (for predictions)","Yes (for predictions)",
+    #         "Optional","Optional","Optional",
+    #         "Yes (for RAG)",
+    #     ],
+    # }
+    # st.dataframe(
+    #     pd.DataFrame(file_table).reset_index(drop=True),
+    #     use_container_width=True,
+    #     hide_index=True,
+    # )
+    # st.divider()
     st.caption("-----")
