@@ -1,0 +1,6 @@
+PATIENT,Y_TRUE,Y_PRED,Y_PROB
+patient-abc-001,0,0,0.12
+patient-abc-002,1,1,0.87
+patient-abc-003,0,0,0.08
+patient-abc-004,1,0,0.41
+patient-abc-005,0,0,0.19
