@@ -69,7 +69,7 @@ def build_and_store_embeddings(summaries_df, batch_size: int = 50):
         collection = get_or_create_collection(client)
 
     total = len(summaries_df)
-    print(f"[vector_store] Embedding {total:,} patient summaries with '{EMBED_MODEL}' …")
+    print(f"[vector_store] Embedding {total:,} patient summaries with '{EMBED_MODEL}' ...")
     print("  (This may take several minutes on first run)")
 
     ids       = []
@@ -101,7 +101,7 @@ def build_and_store_embeddings(summaries_df, batch_size: int = 50):
                 documents=documents,
                 metadatas=metadatas,
             )
-            print(f"  Stored {min(i+1, total)}/{total} patients …", end="\r")
+            print(f"  Stored {min(i+1, total)}/{total} patients ...", end="\r")
             ids, embeddings, documents, metadatas = [], [], [], []
 
     print(f"\n[vector_store] Done. Collection now has {collection.count()} documents.")

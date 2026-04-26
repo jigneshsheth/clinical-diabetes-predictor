@@ -87,4 +87,4 @@ if __name__ == "__main__":
     for i, r in enumerate(results, 1):
         print(f"[{i}] Patient ID: {r['patient_id']}")
         print(f"    Distance : {r['distance']}")
-        print(f"    Summary  : {r['summary'][:200]}…\n")
+        print(f"    Summary  : {r['summary'][:200]}...\n")

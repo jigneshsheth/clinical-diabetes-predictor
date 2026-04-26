@@ -297,25 +297,25 @@ generate_llm =  True #st.toggle("Enable LLM explanation", value=True)
 
 
 # ── Cached loaders ─────────────────────────────────────────────────────────────
-@st.cache_data(show_spinner="Loading Synthea data …")
+@st.cache_data(show_spinner="Loading Synthea data ...")
 def _get_merged():
     if not SRC_OK: return pd.DataFrame()
     try:    return merge_all(load_all_csv())
     except: return pd.DataFrame()
 
-@st.cache_data(show_spinner="Building feature matrix …")
+@st.cache_data(show_spinner="Building feature matrix ...")
 def _get_features(merged):
     if merged.empty or not SRC_OK: return pd.DataFrame(), pd.Series(dtype=int)
     try:    return build_feature_matrix(merged)
     except: return pd.DataFrame(), pd.Series(dtype=int)
 
-@st.cache_resource(show_spinner="Loading model …")
+@st.cache_resource(show_spinner="Loading model ...")
 def _get_model():
     if not SRC_OK: return None, None
     try:    return load_model()
     except: return None, None
 
-@st.cache_data(show_spinner="Building patient summaries …")
+@st.cache_data(show_spinner="Building patient summaries ...")
 def _get_summaries(merged):
     if merged.empty or not SRC_OK: return pd.DataFrame(columns=["PATIENT","SUMMARY"])
     try:    return build_all_summaries(merged)
@@ -398,7 +398,7 @@ with tab1:
 
             # Build display labels: "Patient Index: 0 | Patient ID: 9f3a..."
             patient_labels = [
-                f"Patient Index: {i}  |  Patient ID: {str(pid)[:12]}…"
+                f"Patient Index: {i}  |  Patient ID: {str(pid)}"
                 for i, pid in enumerate(merged["PATIENT"].tolist())
             ]
 
@@ -433,7 +433,7 @@ with tab1:
                     with m2: st.metric("Category", category)
                     with m3:
                         tl = int(pat_row.get("DIABETES_COMPLICATION",-1))
-                        st.metric("True label",
+                        st.metric("Condition",
                                   "Complication" if tl==1 else "No complication" if tl==0 else "Unknown")
                     st.progress(prob, text=f"Risk: {prob:.1%}")
                 else:
@@ -444,7 +444,7 @@ with tab1:
                     try:
                         similar_patients = retrieve_similar_patients(summary_text, top_k=top_k)
                         for i,sp in enumerate(similar_patients,1):
-                            with st.expander(f"Patient {i}  -  dist {sp['distance']:.4f}  -  {sp['patient_id'][:10]}…"):
+                            with st.expander(f"Patient {i}  -  dist {sp['distance']:.4f}  -  {sp['patient_id']}"):
                                 st.write(sp["summary"])
                     except RuntimeError as e:
                         st.warning(str(e))
@@ -502,7 +502,7 @@ with tab1:
             with st.chat_message("user"): st.markdown(final_input)
             st.session_state.chat_context.append({"role":"user","content":final_input})
             with st.chat_message("assistant"):
-                with st.spinner(f"{LLM_MODEL} thinking …"):
+                with st.spinner(f"{LLM_MODEL} thinking ..."):
                     try:
                         resp  = ollama.chat(model=LLM_MODEL,
                                             messages=st.session_state.chat_context,
@@ -889,7 +889,7 @@ with tab5:
     n_show = st.slider("Examples to display", 1, 10, 3, key="rag_n")
     if not summaries_df.empty:
         for _,row in summaries_df.head(n_show).iterrows():
-            with st.expander(f"Patient {str(row['PATIENT'])[:12]}…"):
+            with st.expander(f"Patient {str(row['PATIENT'])[:12]}..."):
                 st.write(row["SUMMARY"])
     else:
         st.caption("No summaries loaded. Run training first.")

@@ -43,12 +43,12 @@ def train_and_evaluate():
 
     # 1. Load and preprocess data
     print("=" * 55)
-    print("STEP 1: Loading Synthea CSV files …")
+    print("STEP 1: Loading Synthea CSV files ...")
     data   = load_all_csv()
     merged = merge_all(data)
 
     # 2. Build feature matrix
-    print("\nSTEP 2: Building feature matrix …")
+    print("\nSTEP 2: Building feature matrix ...")
     X, y = build_feature_matrix(merged)
     patient_ids = X.index.tolist()
 
@@ -67,7 +67,7 @@ def train_and_evaluate():
     X_te_s = scaler.transform(X_te)
 
     # 5. Train model
-    print(f"\nSTEP 3: Training {MODEL_TYPE} …")
+    print(f"\nSTEP 3: Training {MODEL_TYPE} ...")
     if MODEL_TYPE == "xgboost":
         model = XGBClassifier(
             n_estimators=200,
@@ -90,7 +90,7 @@ def train_and_evaluate():
     model.fit(X_tr_s, y_tr)
 
     # 6. Evaluate
-    print("\nSTEP 4: Evaluating on test set …")
+    print("\nSTEP 4: Evaluating on test set ...")
     y_pred  = model.predict(X_te_s)
     y_proba = model.predict_proba(X_te_s)[:, 1]
 
