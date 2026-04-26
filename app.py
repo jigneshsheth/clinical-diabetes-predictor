@@ -945,4 +945,4 @@ with tab6:
         hide_index=True,
     )
     st.divider()
-    st.caption(" All processing runs locally. No data is sent to any external service.")
+    st.caption("-----")
