@@ -17,7 +17,7 @@ def load_all_csv() -> dict[str, pd.DataFrame]:
 
     Returns
     -------
-    dict mapping table name → pd.DataFrame
+    dict mapping table name -> pd.DataFrame
     Missing files are skipped with a warning printed to the console.
     """
     data = {}

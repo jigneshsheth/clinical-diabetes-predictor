@@ -125,8 +125,8 @@ def train_and_evaluate():
     scaler_path = os.path.join(MODELS_DIR, SCALER_FILENAME)
     joblib.dump(model,  model_path)
     joblib.dump(scaler, scaler_path)
-    print(f"\n[train_model] Model saved  → {model_path}")
-    print(f"[train_model] Scaler saved → {scaler_path}")
+    print(f"\n[train_model] Model saved  -> {model_path}")
+    print(f"[train_model] Scaler saved -> {scaler_path}")
 
     return model, scaler, X.columns.tolist()
 

@@ -28,7 +28,7 @@ NUMERIC_FEATURES = [
 
 CATEGORICAL_FEATURES = ["GENDER", "RACE"]
 
-# Map prediction target name → column in the merged DataFrame
+# Map prediction target name -> column in the merged DataFrame
 TARGET_COLUMN_MAP = {
     "diabetes_complication": "DIABETES_COMPLICATION",
     "heart_disease":         "DIABETES_COMPLICATION",   # reuse same column in starter

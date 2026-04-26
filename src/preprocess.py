@@ -19,7 +19,7 @@ def _safe_col(df: pd.DataFrame, col: str) -> bool:
 def clean_patients(df: pd.DataFrame) -> pd.DataFrame:
     """
     Keep useful demographic columns, compute age from BIRTHDATE.
-    BIRTHDATE → age_years (integer).
+    BIRTHDATE -> age_years (integer).
     """
     df = df.copy()
     if _safe_col(df, "BIRTHDATE"):
@@ -157,7 +157,7 @@ def merge_all(data: dict) -> pd.DataFrame:
 
     Parameters
     ----------
-    data : dict of table_name → raw DataFrame (from load_data.load_all_csv)
+    data : dict of table_name -> raw DataFrame (from load_data.load_all_csv)
 
     Returns
     -------

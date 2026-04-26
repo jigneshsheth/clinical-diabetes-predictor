@@ -1,18 +1,18 @@
 """
 app.py
 ------
-Clinical RAG Predictor — 6-tab Streamlit dashboard.
+Clinical Diabetes Risk Predictor- 6-tab Streamlit dashboard.
 
 Tabs:
-  1.  Risk Predictor + Chatbot   — patient risk prediction and LLM explanation
-  2.  Dataset Overview            — Synthea CSV statistics and charts
-  3.  Training Data               — feature distributions, correlation, balance
-  4.  Model Performance           — accuracy, ROC, confusion matrix, feature importance
-  5.  RAG Pipeline Metrics        — ChromaDB stats, similarity distances, summaries
-  6.  System Pipeline             — visual architecture diagram
+  1.  Risk Predictor + Chatbot  - patient risk prediction and LLM explanation
+  2.  Dataset Overview           - Synthea CSV statistics and charts
+  3.  Training Data              - feature distributions, correlation, balance
+  4.  Model Performance          - accuracy, ROC, confusion matrix, feature importance
+  5.  RAG Pipeline Metrics       - ChromaDB stats, similarity distances, summaries
+  6.  System Pipeline            - visual architecture diagram
 
 Launch:
-    cd clinical-rag-predictor
+    cd clinical-diabetes-risk-predictor
     streamlit run app.py
 """
 
@@ -107,7 +107,7 @@ def load_training_data():
 
 
 def load_model_metrics():
-    """Load metrics.json — returns None if missing."""
+    """Load metrics.json- returns None if missing."""
     if not os.path.exists(METRICS_JSON):
         return None
     try:
@@ -247,7 +247,7 @@ st.markdown("""
 [data-testid="stMetricLabel"]{font-size:0.8rem;color:#5A5A5A;}
 </style>""", unsafe_allow_html=True)
 # st.title("Clinical Diabetes Risk Predictor")
-# st.caption("Synthea EHR · XGBoost · ChromaDB · Ollama · Streamlit ")
+# st.caption("Synthea EHR - XGBoost - ChromaDB - Ollama - Streamlit ")
 
 # ── Diabetes logo + app header ─────────────────────────────────────────────
 st.markdown("""
@@ -279,7 +279,7 @@ st.markdown("""
       Clinical Diabetes Risk Predictor
     </div>
     <div style="font-size:0.85rem;color:#5A5A5A;margin-top:3px;">
-      Synthea EHR &nbsp;·&nbsp; XGBoost &nbsp;·&nbsp; ChromaDB &nbsp;·&nbsp; Ollama &nbsp;·&nbsp; Streamlit &nbsp;—&nbsp; fully local
+      Synthea EHR &nbsp;-&nbsp; XGBoost &nbsp;-&nbsp; ChromaDB &nbsp;-&nbsp; Ollama &nbsp;-&nbsp; Streamlit &nbsp;-&nbsp; fully local
     </div>
   </div>
 </div>
@@ -335,7 +335,7 @@ PROMPT_LIBRARY = {
         ("High-HbA1c patients",
          "Which patients likely have HbA1c above 8%? What do they have in common?"),
         ("Demographics overview",
-         "Describe the demographic profile — age range, gender split, highest complication group."),
+         "Describe the demographic profile- age range, gender split, highest complication group."),
     ],
     "Risk analysis": [
         ("Explain High risk",
@@ -378,7 +378,7 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 1 — RISK PREDICTOR + CHATBOT
+# TAB 1- RISK PREDICTOR + CHATBOT
 # ══════════════════════════════════════════════════════════════════════════════
 with tab1:
     left_col, right_col = st.columns([1,1], gap="large")
@@ -419,8 +419,7 @@ with tab1:
             else:
                 pat_row = pat_df.iloc[0]
                 summary_text = build_patient_summary(pat_row) if SRC_OK else f"Patient {selected_id}"
-                st.info(summary_text, icon="📋")
-
+                st.info(summary_text)    
                 with st.expander("Raw feature values"):
                     if selected_id in X.index:
                         st.dataframe(X.loc[selected_id].to_frame("value"), use_container_width=True)
@@ -445,14 +444,14 @@ with tab1:
                     try:
                         similar_patients = retrieve_similar_patients(summary_text, top_k=top_k)
                         for i,sp in enumerate(similar_patients,1):
-                            with st.expander(f"Patient {i}  ·  dist {sp['distance']:.4f}  ·  {sp['patient_id'][:10]}…"):
+                            with st.expander(f"Patient {i}  -  dist {sp['distance']:.4f}  -  {sp['patient_id'][:10]}…"):
                                 st.write(sp["summary"])
                     except RuntimeError as e:
                         st.warning(str(e))
 
     with right_col:
         st.subheader("Chatbot:")
-        # st.caption(f"Powered by **{LLM_MODEL}** via Ollama — fully local")
+        # st.caption(f"Powered by **{LLM_MODEL}** via Ollama- fully local")
 
         if st.button("Generate LLM explanation", disabled=(not generate_llm),
                      use_container_width=True):
@@ -479,7 +478,7 @@ with tab1:
         if "chat_context" not in st.session_state:
             st.session_state.chat_context = [
                 {"role":"user","content":SYS},
-                {"role":"assistant","content":"Ready — ask anything about the project."},
+                {"role":"assistant","content":"Ready- ask anything about the project."},
             ]
 
         with st.expander("Prompt library", expanded=False):
@@ -527,7 +526,7 @@ with tab1:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 2 — DATASET OVERVIEW
+# TAB 2- DATASET OVERVIEW
 # ══════════════════════════════════════════════════════════════════════════════
 with tab2:
     st.subheader("Dataset Overview")
@@ -608,7 +607,7 @@ with tab2:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 3 — TRAINING DATA VISUALISATION
+# TAB 3- TRAINING DATA VISUALISATION
 # ══════════════════════════════════════════════════════════════════════════════
 with tab3:
     st.subheader("Training Dataset Visualisation")
@@ -641,7 +640,7 @@ with tab3:
             _show(fig)
             n_pos=int(vc.get(1,0)); n_neg=int(vc.get(0,0))
             ratio = n_neg/n_pos if n_pos>0 else float("inf")
-            st.info(f"**Class balance** — Negative: {n_neg} · Positive: {n_pos} · Ratio {ratio:.1f}:1")
+            st.info(f"**Class balance**- Negative: {n_neg} - Positive: {n_pos} - Ratio {ratio:.1f}:1")
 
     with col_b:
         miss = train_df[NUM_FEATS].isnull().sum(); miss = miss[miss>0]
@@ -688,7 +687,7 @@ with tab3:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 4 — MODEL PERFORMANCE
+# TAB 4- MODEL PERFORMANCE
 # ══════════════════════════════════════════════════════════════════════════════
 with tab4:
     st.subheader("Model Performance")
@@ -814,7 +813,7 @@ with tab4:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 5 — RAG PIPELINE METRICS
+# TAB 5- RAG PIPELINE METRICS
 # ══════════════════════════════════════════════════════════════════════════════
 with tab5:
     st.subheader("RAG Pipeline Metrics")
@@ -897,7 +896,7 @@ with tab5:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 6 — SYSTEM PIPELINE
+# TAB 6- SYSTEM PIPELINE
 # ══════════════════════════════════════════════════════════════════════════════
 with tab6:
     st.subheader("System Pipeline")
@@ -915,7 +914,7 @@ with tab6:
         ("Data Preprocessing",  "preprocess.py",
          "Each table is cleaned individually then joined on the PATIENT UUID. Dates are "
          "parsed, ages computed, duplicate rows removed, missing numerics filled with zero. "
-         "Output: one wide DataFrame — 117 rows × 16 columns."),
+         "Output: one wide DataFrame- 117 rows × 16 columns."),
         ("Feature Engineering", "features.py",
          "Selects 11 numeric features (AGE_YEARS, HBA1C, BMI, GLUCOSE, SYSTOLIC_BP, "
          "CONDITION_COUNT, MED_COUNT, PROCEDURE_COUNT, ENCOUNTER_COUNT, "
@@ -944,10 +943,10 @@ with tab6:
         ("Streamlit UI",        "app.py",
          "Six-tab dashboard: Risk Predictor, Dataset Overview, Training Data, "
          "Model Performance, RAG Metrics, and System Pipeline. "
-         "All processing is local — no data leaves the machine."),
+         "All processing is local- no data leaves the machine."),
     ]
     for lbl,mod,desc in stages:
-        with st.expander(f"{lbl}  —  `{mod}`"):
+        with st.expander(f"{lbl} -  `{mod}`"):
             st.write(desc)
 
     st.divider()

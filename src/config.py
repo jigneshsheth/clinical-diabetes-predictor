@@ -61,5 +61,5 @@ LLM_MODEL = "mistral"
 LLM_TEMPERATURE = 0.3   # Lower = more focused/factual
 
 # ── Risk thresholds ──────────────────────────────────────────────────────────
-RISK_LOW    = 0.30   # probability < 30 % → Low
-RISK_MEDIUM = 0.60   # 30–60 % → Medium, ≥ 60 % → High
+RISK_LOW    = 0.30   # probability < 30 % -> Low
+RISK_MEDIUM = 0.60   # 30–60 % -> Medium, ≥ 60 % -> High
