@@ -133,27 +133,6 @@ clinical-rag-predictor/
 
 ---
 
-## Prediction targets
-
-### Recommended: Diabetes complication (v1)
-
-**Label definition:** 1 if patient has any SNOMED-CT code for diabetes complication  
-**Required files:** patients.csv, conditions.csv, observations.csv, encounters.csv  
-**Why feasible:** Synthea generates realistic complication rates; HbA1c lab values provide strong signal  
-**Metrics:** accuracy, precision, recall, F1, ROC-AUC
-
-### Alternative 1: Heart disease risk
-
-**Label definition:** 1 if patient has IHD or heart failure condition code  
-**Why feasible:** Common in Synthea; age, BMI, BP are strong predictors
-
-### Alternative 2: High utiliser (readmission proxy)
-
-**Label definition:** 1 if ENCOUNTER_COUNT > 75th percentile  
-**Why feasible:** No specialised labels needed; encounter data always available
-
----
-
 ## Evaluation plan
 
 ### ML metrics
