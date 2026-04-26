@@ -200,11 +200,11 @@ def plot_feature_importance(ax, feature_names, importances, top_n=12):
 def render_pipeline_diagram():
     """Renders a blue/grey HTML pipeline diagram inside Streamlit."""
     steps = [
-        ("📂","Synthea\nCSV Files"),("🧹","Data\nPreprocessing"),
-        ("🔧","Feature\nEngineering"),("🤖","XGBoost\nClassifier"),
-        ("📝","Patient\nSummaries"),("🔢","nomic-embed\nEmbeddings"),
-        ("🗄️","ChromaDB\nStore"),("🔍","Similar\nRetrieval"),
-        ("💬","Ollama LLM\nExplanation"),("🖥️","Streamlit\nUI"),
+        ("","Synthea\nCSV Files"),("","Data\nPreprocessing"),
+        ("","Feature\nEngineering"),("","XGBoost\nClassifier"),
+        ("","Patient\nSummaries"),("","nomic-embed\nEmbeddings"),
+        ("","ChromaDB\nStore"),("","Similar\nRetrieval"),
+        ("","Ollama LLM\nExplanation"),("","Streamlit\nUI"),
     ]
     box = ("display:inline-flex;flex-direction:column;align-items:center;"
            "justify-content:center;background:#EAF3FB;"
@@ -246,8 +246,45 @@ st.markdown("""
 [data-testid="stMetricValue"]{font-size:1.4rem;color:#1F3A5F;}
 [data-testid="stMetricLabel"]{font-size:0.8rem;color:#5A5A5A;}
 </style>""", unsafe_allow_html=True)
-st.title("Clinical Diabetes Risk Predictor")
-st.caption("Synthea EHR · XGBoost · ChromaDB · Ollama · Streamlit ")
+# st.title("Clinical Diabetes Risk Predictor")
+# st.caption("Synthea EHR · XGBoost · ChromaDB · Ollama · Streamlit ")
+
+# ── Diabetes logo + app header ─────────────────────────────────────────────
+st.markdown("""
+<div style="display:flex;align-items:center;gap:18px;padding:12px 0 6px 0;">
+ 
+  <!-- Diabetes symbolic logo: blue circle + drop + ribbon -->
+  <svg width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer ring -->
+    <circle cx="34" cy="34" r="32" stroke="#2E6DA4" stroke-width="3" fill="#EAF3FB"/>
+    <!-- Blue awareness ribbon loop (left arc) -->
+    <path d="M28 18 C22 24 22 36 28 40 C24 46 22 52 26 56"
+          stroke="#1F3A5F" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- Blue awareness ribbon loop (right arc) -->
+    <path d="M40 18 C46 24 46 36 40 40 C44 46 46 52 42 56"
+          stroke="#1F3A5F" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- Ribbon cross bar -->
+    <path d="M28 40 C31 44 37 44 40 40" stroke="#1F3A5F" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- Blood drop shape (centre) -->
+    <path d="M34 22 C34 22 27 31 27 36 C27 40.4 30.1 44 34 44 C37.9 44 41 40.4 41 36 C41 31 34 22 34 22Z"
+          fill="#2E6DA4" opacity="0.85"/>
+    <!-- Highlight on drop -->
+    <ellipse cx="31" cy="35" rx="2" ry="3.5" fill="white" opacity="0.4" transform="rotate(-15 31 35)"/>
+    <!-- Glucose ring accent -->
+    <circle cx="34" cy="34" r="32" stroke="#5A9FD4" stroke-width="1" fill="none" opacity="0.4"/>
+  </svg>
+ 
+  <div>
+    <div style="font-size:1.7rem;font-weight:600;color:#1F3A5F;line-height:1.2;">
+      Clinical Diabetes Risk Predictor
+    </div>
+    <div style="font-size:0.85rem;color:#5A5A5A;margin-top:3px;">
+      Synthea EHR &nbsp;·&nbsp; XGBoost &nbsp;·&nbsp; ChromaDB &nbsp;·&nbsp; Ollama &nbsp;·&nbsp; Streamlit &nbsp;—&nbsp; fully local
+    </div>
+  </div>
+</div>
+<hr style="border:none;border-top:1.5px solid #B8D9F2;margin:4px 0 16px 0;">
+""", unsafe_allow_html=True)
 top_k        = TOP_K #st.slider("Similar patients to retrieve", 1, 10, TOP_K)
 generate_llm =  True #st.toggle("Enable LLM explanation", value=True)
 # with st.sidebar:
@@ -347,7 +384,7 @@ with tab1:
     left_col, right_col = st.columns([1,1], gap="large")
 
     with left_col:
-        st.subheader("Patient risk prediction")
+        st.subheader("Diabetes Risk Predictor: ")
         if not patient_ids:
             st.warning("No patient data loaded. Place Synthea CSVs in `./data/` and restart.")
         else:
@@ -414,17 +451,17 @@ with tab1:
                         st.warning(str(e))
 
     with right_col:
-        st.subheader("Clinical chatbot")
-        st.caption(f"Powered by **{LLM_MODEL}** via Ollama — fully local")
+        st.subheader("Chatbot:")
+        # st.caption(f"Powered by **{LLM_MODEL}** via Ollama — fully local")
 
         if st.button("Generate LLM explanation", disabled=(not generate_llm),
                      use_container_width=True):
             if SRC_OK and similar_patients:
-                with st.spinner("Generating …"):
+                with st.spinner("Generating ..."):
                     exp = generate_explanation(summary_text, prob, category, similar_patients)
                 st.markdown(exp)
             else:
-                st.warning("Enable LLM explanation and ensure ChromaDB is built.")
+                st.warning("Enable LLM explanation and ensure ChromaDB is built...")
 
         st.divider()
 
@@ -458,7 +495,7 @@ with tab1:
             with st.chat_message(msg["role"]): st.markdown(msg["content"])
 
         injected    = st.session_state.pop("pending_prompt", None)
-        user_input  = st.chat_input("Ask about patients, predictions, or the pipeline …")
+        user_input  = st.chat_input("Ask about patients, predictions, or the pipeline ...")
         final_input = user_input or injected
 
         if final_input:
@@ -830,7 +867,7 @@ with tab5:
         elif not summaries_df.empty and SRC_OK:
             distances = []
             sample_ids = summaries_df["PATIENT"].tolist()[:20]
-            prog = st.progress(0, text="Querying …")
+            prog = st.progress(0, text="Querying ...")
             for i,pid in enumerate(sample_ids):
                 row = summaries_df[summaries_df["PATIENT"]==pid]
                 if row.empty: continue
