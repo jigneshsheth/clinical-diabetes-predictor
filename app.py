@@ -350,9 +350,31 @@ with tab1:
         if not patient_ids:
             st.warning("No patient data loaded. Place Synthea CSVs in `./data/` and restart.")
         else:
-            selected_id = st.selectbox("Select patient ID", patient_ids, key="t1_pid")
-            pat_df = (merged[merged["PATIENT"]==selected_id]
-                      if "PATIENT" in merged.columns else pd.DataFrame())
+            # selected_id = st.selectbox("Select patient ID", patient_ids, key="t1_pid")
+            # pat_df = (merged[merged["PATIENT"]==selected_id]
+            #           if "PATIENT" in merged.columns else pd.DataFrame())
+            # ── Patient selector: Index + ID ─────────────────────────────────────────
+            if merged.empty or "PATIENT" not in merged.columns:
+                st.warning("Patient data not loaded or PATIENT column missing.")
+                st.stop()
+
+            # Build display labels: "Patient Index: 0 | Patient ID: 9f3a..."
+            patient_labels = [
+                f"Patient Index: {i}  |  Patient ID: {str(pid)[:12]}…"
+                for i, pid in enumerate(merged["PATIENT"].tolist())
+            ]
+
+            selected_label = st.selectbox(
+                "Select patient",
+                options=patient_labels,
+                index=0,
+                key="t1_pid",
+            )
+
+            # Map label back to the actual row
+            selected_index = patient_labels.index(selected_label)
+            selected_id    = merged["PATIENT"].iloc[selected_index]
+            pat_df         = merged.iloc[[selected_index]]
 
             if pat_df.empty:
                 st.warning("Patient not found.")
