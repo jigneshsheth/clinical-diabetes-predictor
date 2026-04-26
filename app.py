@@ -439,13 +439,93 @@ with tab1:
                 else:
                     st.warning("Model not trained. Run `cd src && python train_model.py`")
 
-                st.subheader("Similar patients (RAG)")
+                st.subheader("Similar Diabetes Patients")
                 if SRC_OK:
                     try:
                         similar_patients = retrieve_similar_patients(summary_text, top_k=top_k)
                         for i,sp in enumerate(similar_patients,1):
                             with st.expander(f"Patient {i}  -  dist {sp['distance']:.4f}  -  {sp['patient_id']}"):
-                                st.write(sp["summary"])
+                                raw = sp["summary"]
+                                # st.write(sp["summary"])
+                                # ── Re-format the stored plain text into structured display ──────────
+                             
+                                def _extract(text, keyword, default="—"):
+                                    """Pull the value after a keyword from the plain summary string."""
+                                    import re
+                                    patterns = {
+                                        "age":        r"(\d+)-year-old",
+                                        "gender":     r"\d+-year-old\s+(\w+)",
+                                        "race":       r"\d+-year-old\s+\w+\s+\((\w+)\)",
+                                        "conditions": r"(\d+)\s+recorded conditions",
+                                        "meds":       r"(\d+)\s+distinct medications",
+                                        "procedures": r"(\d+)\s+procedures",
+                                        "encounters": r"(\d+)\s+total encounters",
+                                        "enc_types":  r"(\d+)\s+different encounter types",
+                                        "hba1c":      r"HbA1c\s+([\d.]+)%",
+                                        "bp":         r"systolic BP\s+([\d.]+)\s+mmHg",
+                                        "bmi":        r"BMI\s+([\d.]+)",
+                                        "glucose":    r"glucose\s+([\d.]+)\s+mg",
+                                        "outcome":    r"Outcome:\s+(.+)\.",
+                                    }
+                                    m = re.search(patterns.get(keyword, ""), text, re.IGNORECASE)
+                                    return m.group(1) if m else default
+
+                                age        = _extract(raw, "age")
+                                gender_raw = _extract(raw, "gender")
+                                race       = _extract(raw, "race")
+                                gender_sym = {"male": "♂ Male", "female": "♀ Female"}.get(
+                                                gender_raw.lower(), gender_raw)
+
+                                n_cond  = _extract(raw, "conditions")
+                                n_med   = _extract(raw, "meds")
+                                n_proc  = _extract(raw, "procedures")
+                                enc     = _extract(raw, "encounters")
+                                e_types = _extract(raw, "enc_types")
+
+                                hba1c   = _extract(raw, "hba1c")
+                                bp      = _extract(raw, "bp")
+                                bmi     = _extract(raw, "bmi")
+                                glucose = _extract(raw, "glucose")
+
+                                outcome_raw = _extract(raw, "outcome", "Unknown")
+                                outcome_icon = "⚠️" if "complication" in outcome_raw.lower() and \
+                                                        "no" not in outcome_raw.lower() else ":Check:"
+
+                                # Lab flags
+                                def _flag(val, threshold, label):
+                                    try:
+                                        return f" {label}" if float(val) >= threshold else ""
+                                    except (ValueError, TypeError):
+                                        return ""
+
+                                lab_lines = []
+                                if hba1c  != "—": lab_lines.append(f"HbA1c:       {hba1c}%{_flag(hba1c, 7.0, 'elevated')}")
+                                if bp     != "—": lab_lines.append(f"Systolic BP: {bp} mmHg{_flag(bp, 130, 'elevated')}")
+                                if bmi    != "—": lab_lines.append(f"BMI:         {bmi}{_flag(bmi, 25, 'overweight')}")
+                                if glucose!= "—": lab_lines.append(f"Glucose:     {glucose} mg/dL{_flag(glucose, 100, 'elevated')}")
+                                lab_block = "\n  -  ".join(lab_lines) if lab_lines else "No lab values recorded"
+
+                                formatted = (
+                                    f"    {age} yrs  -  {gender_sym}  -  {race}\n\n"
+                                    f"    Clinical history\n"
+                                    f"    Conditions:  {n_cond}\n"
+                                    f"    Medications: {n_med}\n"
+                                    f"    Procedures:  {n_proc}\n\n"
+                                    f"    Healthcare utilisation\n"
+                                    f"    Encounters:  {enc} across {e_types} encounter types\n\n"
+                                    f"    Lab values\n"
+                                    f"    {lab_block}\n\n"
+                                    f"    Outcome\n"
+                                    f"    \n{outcome_icon} {outcome_raw}"
+                                )
+
+                                st.markdown(
+                                    f"<pre style='font-size:13px;line-height:1.8;"
+                                    f"background:transparent;border:1px solid #B8D9F2;"
+                                    f"border-radius:8px;padding:14px 18px;"
+                                    f"color:var(--color-text-primary);'>{formatted}</pre>",
+                                    unsafe_allow_html=True
+                                )   
                     except RuntimeError as e:
                         st.warning(str(e))
 
