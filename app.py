@@ -240,22 +240,23 @@ def _show(fig):
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE CONFIG
 # ══════════════════════════════════════════════════════════════════════════════
-st.set_page_config(page_title="Clinical RAG Predictor", page_icon="🏥", layout="wide")
+st.set_page_config(page_title="Clinical Diabetes Risk Predictor", page_icon="🏥", layout="wide")
 st.markdown("""
 <style>
 [data-testid="stMetricValue"]{font-size:1.4rem;color:#1F3A5F;}
 [data-testid="stMetricLabel"]{font-size:0.8rem;color:#5A5A5A;}
 </style>""", unsafe_allow_html=True)
 st.title("Clinical Diabetes Risk Predictor")
-st.caption("Synthea EHR · XGBoost · ChromaDB · Ollama · Streamlit — fully local, no cloud required")
-
-with st.sidebar:
-    st.header("Settings")
-    top_k        = st.slider("Similar patients to retrieve", 1, 10, TOP_K)
-    generate_llm = st.toggle("Enable LLM explanation", value=True)
-    st.divider()
-    st.markdown("""
-""")
+st.caption("Synthea EHR · XGBoost · ChromaDB · Ollama · Streamlit ")
+top_k        = TOP_K #st.slider("Similar patients to retrieve", 1, 10, TOP_K)
+generate_llm =  True #st.toggle("Enable LLM explanation", value=True)
+# with st.sidebar:
+#     # st.header("Settings")
+#     top_k        = TOP_K #st.slider("Similar patients to retrieve", 1, 10, TOP_K)
+#     generate_llm =  True #st.toggle("Enable LLM explanation", value=True)
+#     st.divider()
+#     st.markdown("""
+# """)
 
 
 # ── Cached loaders ─────────────────────────────────────────────────────────────
@@ -291,7 +292,7 @@ patient_ids   = (merged["PATIENT"].tolist()
                  if not merged.empty and "PATIENT" in merged.columns else [])
 
 PROMPT_LIBRARY = {
-    "🔍 Patient lookup": [
+    "Patient lookup": [
         ("Full dataset summary",
          "Give me an overview: total patients, average age, gender breakdown, complication rate."),
         ("High-HbA1c patients",
@@ -299,7 +300,7 @@ PROMPT_LIBRARY = {
         ("Demographics overview",
          "Describe the demographic profile — age range, gender split, highest complication group."),
     ],
-    "📊 Risk analysis": [
+    "Risk analysis": [
         ("Explain High risk",
          "Describe a typical High-risk patient. Which features push a patient into High risk?"),
         ("Risk distribution",
@@ -307,7 +308,7 @@ PROMPT_LIBRARY = {
         ("What lowers risk?",
          "For a Medium-risk patient, which single improvement most reduces predicted risk?"),
     ],
-    "🤖 Explain the AI": [
+    "Explain the AI": [
         ("Why HbA1c is top predictor",
          "Explain HbA1c, its normal range, and why it dominates this model."),
         ("How RAG retrieval works",
@@ -315,7 +316,7 @@ PROMPT_LIBRARY = {
         ("RAG vs plain classifier",
          "Compare XGBoost alone vs the full RAG pipeline. What does each add?"),
     ],
-    "📝 Assignment prompts": [
+    "Assignment prompts": [
         ("Project abstract",
          "Write a 150-word academic abstract covering what was built, methods, and results."),
         ("Limitations",
@@ -330,12 +331,12 @@ PROMPT_LIBRARY = {
 # TABS
 # ══════════════════════════════════════════════════════════════════════════════
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-    "🏥 Risk Predictor",
-    "📋 Dataset Overview",
-    "🔬 Training Data",
-    "📈 Model Performance",
-    "🔗 RAG Metrics",
-    "🗺️ System Pipeline",
+    "Risk Predictor",
+    "Dataset Overview",
+    "Training Data",
+    "Model Performance",
+    "RAG Metrics",
+    "System Pipeline",
 ])
 
 
@@ -444,7 +445,7 @@ with tab1:
                 {"role":"assistant","content":"Ready — ask anything about the project."},
             ]
 
-        with st.expander("📚 Prompt library", expanded=False):
+        with st.expander("Prompt library", expanded=False):
             for cat_name, prompts in PROMPT_LIBRARY.items():
                 st.markdown(f"**{cat_name}**")
                 cols = st.columns(3)
@@ -485,7 +486,7 @@ with tab1:
                 st.rerun()
 
     st.divider()
-    st.caption("⚠️  Synthetic Synthea data only — not for real clinical use.")
+    st.caption("")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -870,40 +871,40 @@ with tab6:
 
     st.markdown("#### Stage descriptions")
     stages = [
-        ("📂 Synthea CSV Files",   "load_data.py",
+        ("Synthea CSV Files",   "load_data.py",
          "Nine CSV files from the Synthea synthetic EHR generator. Each file is one table: "
          "patients, encounters, conditions, medications, observations, procedures, "
          "allergies, careplans, immunizations."),
-        ("🧹 Data Preprocessing",  "preprocess.py",
+        ("Data Preprocessing",  "preprocess.py",
          "Each table is cleaned individually then joined on the PATIENT UUID. Dates are "
          "parsed, ages computed, duplicate rows removed, missing numerics filled with zero. "
          "Output: one wide DataFrame — 117 rows × 16 columns."),
-        ("🔧 Feature Engineering", "features.py",
+        ("Feature Engineering", "features.py",
          "Selects 11 numeric features (AGE_YEARS, HBA1C, BMI, GLUCOSE, SYSTOLIC_BP, "
          "CONDITION_COUNT, MED_COUNT, PROCEDURE_COUNT, ENCOUNTER_COUNT, "
          "UNIQUE_ENCOUNTER_TYPES, IS_DECEASED) plus label-encoded GENDER and RACE. "
          "Extracts the binary DIABETES_COMPLICATION label."),
-        ("🤖 XGBoost Classifier",  "train_model.py",
+        ("XGBoost Classifier",  "train_model.py",
          "XGBoost (200 estimators, depth 4, lr 0.05) trained on the 80/20 split. "
          "StandardScaler normalises features. Saved to ./models/risk_model.joblib. "
          "Returns probability + Low/Medium/High category at inference."),
-        ("📝 Patient Summaries",   "build_rag_documents.py",
+        ("Patient Summaries",   "build_rag_documents.py",
          "Each patient row becomes a natural-language paragraph: age, gender, conditions, "
          "lab values, and outcome label. These are the RAG retrieval documents."),
-        ("🔢 Embeddings",          "vector_store.py",
+        ("Embeddings",          "vector_store.py",
          "nomic-embed-text via Ollama converts each summary to a 768-dimensional vector. "
          "Run once offline; takes ~5-10 minutes for 117 patients."),
-        ("🗄️ ChromaDB",            "vector_store.py",
+        ("ChromaDB",            "vector_store.py",
          "All 117 embeddings are upserted into a local ChromaDB persistent collection "
          "in ./chroma_db/. Supports cosine similarity search."),
-        ("🔍 Retrieval",           "retriever.py",
+        ("Retrieval",           "retriever.py",
          "At inference time the query patient summary is embedded and ChromaDB returns "
          "the top-k nearest summaries by cosine distance. Default k=3."),
-        ("💬 Ollama LLM",          "llm_explainer.py",
+        ("Ollama LLM",          "llm_explainer.py",
          "Mistral-7B-Instruct (local Ollama) receives: patient summary, risk probability, "
          "risk category, and the top-3 retrieved patient histories. Generates a grounded "
          "plain-English clinical explanation at temperature 0.3."),
-        ("🖥️ Streamlit UI",        "app.py",
+        ("Streamlit UI",        "app.py",
          "Six-tab dashboard: Risk Predictor, Dataset Overview, Training Data, "
          "Model Performance, RAG Metrics, and System Pipeline. "
          "All processing is local — no data leaves the machine."),
