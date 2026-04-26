@@ -2,7 +2,7 @@
 config.py
 ---------
 Central configuration for the Clinical RAG Predictor.
-Change paths and settings here — no need to edit other files.
+Change paths and settings here - no need to edit other files.
 """
 
 import os

@@ -1,7 +1,7 @@
 """
 llm_explainer.py
 ----------------
-Calls a local Ollama LLM (mistral or llama3) to generate a plain-English
+Calls a local Ollama LLM (mistral or ) to generate a plain-English
 clinical explanation for a patient's predicted risk score,
 using retrieved similar patients as supporting evidence.
 """
@@ -14,7 +14,7 @@ SYSTEM_PROMPT = """You are a helpful clinical decision support assistant.
 Your job is to explain a patient's predicted risk score in plain English.
 Use the similar patient cases provided as evidence to support your explanation.
 Keep your explanation clear, concise, and non-technical.
-Do not make definitive diagnoses — only provide supportive insights.
+Do not make definitive diagnoses - only provide supportive insights.
 Always recommend consulting a qualified healthcare provider."""
 
 

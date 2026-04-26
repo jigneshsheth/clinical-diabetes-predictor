@@ -24,7 +24,7 @@ def load_all_csv() -> dict[str, pd.DataFrame]:
     for table_name, filename in CSV_FILES.items():
         filepath = os.path.join(DATA_DIR, filename)
         if not os.path.exists(filepath):
-            print(f"[load_data] WARNING: {filename} not found — skipping {table_name}")
+            print(f"[load_data] WARNING: {filename} not found - skipping {table_name}")
             continue
         try:
             df = pd.read_csv(filepath, low_memory=False)
@@ -40,7 +40,7 @@ def load_all_csv() -> dict[str, pd.DataFrame]:
 def get_patient_ids(data: dict) -> list[str]:
     """Return the list of unique patient IDs from patients.csv."""
     if "patients" not in data:
-        raise ValueError("patients.csv was not loaded — cannot get patient IDs.")
+        raise ValueError("patients.csv was not loaded - cannot get patient IDs.")
     return data["patients"]["ID"].dropna().unique().tolist()
 
 

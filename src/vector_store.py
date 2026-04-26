@@ -61,7 +61,7 @@ def build_and_store_embeddings(summaries_df, batch_size: int = 50):
         print(f"[vector_store] Collection already has {existing} documents.")
         ans = input("Re-embed? This will overwrite existing data. [y/N] ").strip().lower()
         if ans != "y":
-            print("[vector_store] Skipping embedding — using existing data.")
+            print("[vector_store] Skipping embedding - using existing data.")
             return collection
 
         # Delete existing and recreate

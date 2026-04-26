@@ -449,7 +449,7 @@ with tab1:
                                 # st.write(sp["summary"])
                                 # ── Re-format the stored plain text into structured display ──────────
                              
-                                def _extract(text, keyword, default="—"):
+                                def _extract(text, keyword, default="-"):
                                     """Pull the value after a keyword from the plain summary string."""
                                     import re
                                     patterns = {
@@ -499,10 +499,10 @@ with tab1:
                                         return ""
 
                                 lab_lines = []
-                                if hba1c  != "—": lab_lines.append(f"HbA1c:       {hba1c}%{_flag(hba1c, 7.0, 'elevated')}")
-                                if bp     != "—": lab_lines.append(f"Systolic BP: {bp} mmHg{_flag(bp, 130, 'elevated')}")
-                                if bmi    != "—": lab_lines.append(f"BMI:         {bmi}{_flag(bmi, 25, 'overweight')}")
-                                if glucose!= "—": lab_lines.append(f"Glucose:     {glucose} mg/dL{_flag(glucose, 100, 'elevated')}")
+                                if hba1c  != "-": lab_lines.append(f"HbA1c:       {hba1c}%{_flag(hba1c, 7.0, 'elevated')}")
+                                if bp     != "-": lab_lines.append(f"Systolic BP: {bp} mmHg{_flag(bp, 130, 'elevated')}")
+                                if bmi    != "-": lab_lines.append(f"BMI:         {bmi}{_flag(bmi, 25, 'overweight')}")
+                                if glucose!= "-": lab_lines.append(f"Glucose:     {glucose} mg/dL{_flag(glucose, 100, 'elevated')}")
                                 lab_block = "\n  -  ".join(lab_lines) if lab_lines else "No lab values recorded"
 
                                 formatted = (
@@ -626,7 +626,7 @@ with tab2:
         ("Patients",raw["patients"]),("Encounters",raw["encounters"]),
         ("Conditions",raw["conditions"]),("Medications",raw["medications"]),
         ("Observations",raw["observations"]),("Procedures",raw["procedures"])]):
-        with col: st.metric(lbl, f"{len(df):,}" if df is not None else "—")
+        with col: st.metric(lbl, f"{len(df):,}" if df is not None else "-")
 
     st.divider()
 
@@ -814,7 +814,7 @@ with tab4:
         ("f1","F1 Score"),("roc_auc","ROC-AUC")]):
         with col:
             v = m.get(k)
-            st.metric(lbl, f"{v:.4f}" if v is not None else "—")
+            st.metric(lbl, f"{v:.4f}" if v is not None else "-")
     st.divider()
 
     col_left, col_right = st.columns(2)

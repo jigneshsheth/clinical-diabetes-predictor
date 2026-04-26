@@ -54,7 +54,7 @@ def build_feature_matrix(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     # ── Target label ─────────────────────────────────────────────────────────
     target_col = TARGET_COLUMN_MAP.get(PREDICTION_TARGET, "DIABETES_COMPLICATION")
     if target_col not in df.columns:
-        print(f"[features] WARNING: target column '{target_col}' not found — creating zeros.")
+        print(f"[features] WARNING: target column '{target_col}' not found - creating zeros.")
         df[target_col] = 0
     y = df[target_col].clip(0, 1).astype(int)  # ensure binary 0/1
 

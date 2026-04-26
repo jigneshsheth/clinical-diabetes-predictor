@@ -46,7 +46,7 @@ try:
 except ImportError:
     from sklearn.ensemble import RandomForestClassifier
     MODEL_TYPE = "randomforest"
-    print("[train_model] XGBoost not found — falling back to RandomForest.")
+    print("[train_model] XGBoost not found - falling back to RandomForest.")
 
 from config import (
     MODELS_DIR, MODEL_FILENAME, SCALER_FILENAME,
@@ -111,7 +111,7 @@ def train_and_evaluate():
     # ── STEP 3: Cross-validation strategy ────────────────────────────────────
     # With only 8 positives, use Leave-One-Out (LOO) so every positive
     # appears in the test fold exactly once.
-    # LOO gives 117 folds of 116 train / 1 test — robust for tiny datasets.
+    # LOO gives 117 folds of 116 train / 1 test - robust for tiny datasets.
     print("\nSTEP 3: Cross-validated evaluation (Leave-One-Out) ...")
 
     scaler_cv = StandardScaler()
@@ -225,7 +225,7 @@ def train_and_evaluate():
         print(f"[train_model] Feature importance saved -> {FEAT_IMP_CSV}")
 
     # ── STEP 9: Save predictions.csv ──────────────────────────────────────────
-    # Uses LOO CV probabilities — every patient appears in the test fold
+    # Uses LOO CV probabilities - every patient appears in the test fold
     # exactly once, so all 117 rows are present including all 8 positives.
     # Tab 4 charts (ROC, PR, confusion matrix) read from this file.
     pred_df = pd.DataFrame({
