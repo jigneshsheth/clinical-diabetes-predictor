@@ -1,4 +1,4 @@
-# Clinical Diabetes Risk Predictor
+# Clinical Diabetes Risk Predictor & Chatbot
 
 A local AI system that combines **predictive ML**, **Retrieval-Augmented Generation (RAG)**, and a **local LLM** to analyse synthetic patient records from Synthea.
 
