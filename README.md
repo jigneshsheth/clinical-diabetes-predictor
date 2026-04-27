@@ -16,6 +16,11 @@ A local AI system that combines **predictive ML**, **Retrieval-Augmented Generat
 
 ---
 
+<img width="1459" height="909" alt="Screenshot 2026-04-26 at 11 59 55 PM" src="https://github.com/user-attachments/assets/725cebbf-c3f2-42d9-a5ab-5857e0e5ee23" />
+
+
+
+
 ## Quick start (Mac)
 
 ### 1 - Install dependencies
@@ -152,10 +157,6 @@ clinical-rag-predictor/
 - Ollama LLM may hallucinate - always treat explanations as illustrative only
 
 ---
-
-**Title:** A Predictive and Generative Clinical Decision Support System Using Synthetic EHR Data, Retrieval-Augmented Generation, and Local Large Language Models
-
-**Research question:** Can a fully local AI pipeline - combining XGBoost risk prediction, ChromaDB-based patient similarity retrieval, and a locally-deployed LLM - generate interpretable, evidence-grounded clinical explanations for patient risk from synthetic EHR data?
 
 **Methodology:** Synthea CSV data is preprocessed into a patient-level feature matrix. An XGBoost classifier predicts diabetes complication risk. Natural-language patient summaries are embedded using nomic-embed-text and stored in ChromaDB. For each query patient, the top-k most similar historical patients are retrieved and provided as context to a local Mistral LLM, which generates a plain-English clinical explanation.
 
